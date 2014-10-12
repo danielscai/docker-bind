@@ -1,9 +1,27 @@
+#
+# Bind9 Dockerfile
+#
+# https://github.com/danielscai/docker-bind9
+#
+
+# Pull base images.
 FROM ubuntu:14.04
-RUN apt-get update
-RUN apt-get -y upgrade
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install bind9
-ADD named.conf /etc/bind/named.conf
-ADD named.conf.options /etc/bind/named.conf.options
+
+# Install Bind9
+RUN \
+  sed -i 's/^# \(.*-backports\s\)/\1/g' /etc/apt/sources.list && \
+  apt-get update && \
+  apt-get install -y bind9 && \
+  rm -rf /var/lib/apt/lists/*
+
+# Add files.
+ADD start.bash /bind-start
+
+# Define mountable directories.
+VOLUME ["/bind-override"]
+
+# Define default command. 
+CMD ["bash","/bind-start"]
+
+# Expose ports.
 EXPOSE 53
-VOLUME /data
-CMD ["/usr/sbin/named", "-c", "/etc/bind/named.conf", "-f"]
