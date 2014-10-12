@@ -19,7 +19,7 @@
 
     docker run -d -p 53:53 -p 53:53/udp dcai/bind
 
-#### Customizing Haproxy
+#### Customizing Bind
 
     docker run -d -p 53:53 -p 53:53/udp -v <override-dir>:/bind-override dcai/bind
 
@@ -30,3 +30,6 @@ where `<override-dir>` is an absolute path of a directory that could contain:
   - `name.conf.local`: custom local file 
   - `db.mine`: your private record .
 
+### Refs
+
+refs to [Dockerfile/haproxy](https://github.com/dockerfile/haproxy).
